@@ -1,0 +1,61 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Sat Sep 5 12:26:40 2020
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> conn
+Enter user-name: System
+Enter password:
+ERROR:
+ORA-28002: the password will expire within 7 days
+
+
+Connected.
+SQL> create table t(usn integer primary key,name varchar(20),ph_no integer, branch varchar(4));
+
+Table created.
+
+SQL> insert into t values(10,'nruthya',1234567,'cs');
+
+1 row created.
+
+SQL> insert into t values(11,'ganapathy',567890,'cs');
+
+1 row created.
+
+SQL> insert into t values(12,'production',563356,'cs');
+
+1 row created.
+
+SQL> insert into t values(13,'primary',145789,'cs');
+
+1 row created.
+
+SQL> insert into t values(14,'secondary',678954,'cs');
+
+1 row created.
+
+SQL> select * from table t
+  2
+SQL> select * from student;
+
+no rows selected
+
+SQL> select * from table t;
+select * from table t
+                    *
+ERROR at line 1:
+ORA-00906: missing left parenthesis
+
+
+SQL> select * from t;
+
+       USN NAME                      PH_NO BRAN
+---------- -------------------- ---------- ----
+        10 nruthya                 1234567 cs
+        11 ganapathy                567890 cs
+        12 production               563356 cs
+        13 primary                  145789 cs
+        14 secondary                678954 cs
+
+SQL>
