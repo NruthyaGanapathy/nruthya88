@@ -1,0 +1,93 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Fri Sep 11 13:52:48 2020
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+
+SQL> conn
+Enter user-name: System
+Enter password:
+ERROR:
+ORA-28002: the password will expire within 1 days
+
+
+Connected.
+
+SQL> create table BOOk0(book_id integer primary key, title varchar(30),p_name varchar(20), p_year integer);
+
+Table created.
+
+SQL> insert into BOOK0 values(134,'dbms','aaa','2020');
+
+1 row created.
+
+SQL> select * from BOOK0;
+
+   BOOK_ID TITLE                          P_NAME                   P_YEAR
+---------- ------------------------------ -------------------- ----------
+       134 dbms                           aaa                        2020
+
+SQL> insert into BOOK0 values(133,'d2ms','aab','2020');
+
+1 row created.
+
+SQL> insert into BOOK0 values(135,'m2ms','abb','2020');
+
+1 row created.
+
+SQL> insert into BOOK0 values(136,'n2ms','bbb','2020');
+
+1 row created.
+
+SQL> select * from BOOK0;
+
+   BOOK_ID TITLE                          P_NAME                   P_YEAR
+---------- ------------------------------ -------------------- ----------
+       134 dbms                           aaa                        2020
+       133 d2ms                           aab                        2020
+       135 m2ms                           abb                        2020
+       136 n2ms                           bbb                        2020
+
+SQL> insert into BOOK0 values(137,'dbms','ccc','2020');
+
+1 row created.
+
+SQL> select * from BOOK0;
+
+   BOOK_ID TITLE                          P_NAME                   P_YEAR
+---------- ------------------------------ -------------------- ----------
+       134 dbms                           aaa                        2020
+       133 d2ms                           aab                        2020
+       135 m2ms                           abb                        2020
+       136 n2ms                           bbb                        2020
+       137 dbms                           ccc                        2020
+
+SQL> select book_id from book0;
+
+   BOOK_ID
+----------
+       134
+       133
+       135
+       136
+       137
+
+SQL> create table BOOK0_copies(book_id integer, branch_id integer, no_of_copies integer,  primary key(book_id, branch_id));
+
+Table created.
+
+SQL> select * from BOOK0
+  2  where book_id=133;
+
+   BOOK_ID TITLE                          P_NAME                   P_YEAR
+---------- ------------------------------ -------------------- ----------
+       133 d2ms                           aab                        2020
+
+SQL> select * from BOOK0 where book_id=133;
+
+   BOOK_ID TITLE                          P_NAME                   P_YEAR
+---------- ------------------------------ -------------------- ----------
+       133 d2ms                           aab                        2020
+
+SQL>
+
