@@ -1,0 +1,358 @@
+
+mysql>
+mysql> create table PUBLISHER30(Name varchar(20) primary key,Address varchar(30),Phone varchar(10));
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> create table BOOK30(Book_id integer,Title varchar(20),Publisher_Name varchar(20),Pub_Year integer,primary key(Book_id),foreign key(Publisher_Name)references PUBLISHER30(Name) ON DELETE CASCADE);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create table BOOK_AUTHORS30(Book_id integer,Author_Name varchar(20),primary key(Book_id),foreign key(Book_id) references BOOK30(Book_id)on delete cascade);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table LIBRARY_BRANCH30(Branch_id integer,Branch_Name varchar(20),Address varchar(30),primary key(Branch_id));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql>  create table BOOK_COPIES30(Book_id integer,Branch_id integer,No_of_Copies integer,foreign key(Book_id) references BOOK30(Book_id) on delete cascade,foreign key(Branch_id) references LIBRARY_BRANCH30(Branch_id));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create table BOOK_LENDING30(Book_id integer,Branch_id integer,Card_No integer,Date_Out Date,Due_Date Date,foreign key(Book_id) references BOOK30(Book_id) on delete cascade,foreign key(Branch_id) references LIBRARY_BRANCH30(Branch_id) on delete cascade);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into PUBLISHER30 values('Mcgraw','Bangalore','9696500001');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into PUBLISHER30 values('Person','Bangalore','9595950000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into PUBLISHER30 values('SAM Pub','Mangalore','9494940000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into PUBLISHER30 values('IOP','Mumbai','9797970000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into PUBLISHER30 values('IEEE','Delhi','9090900000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into BOOK30 values(10,'DBMS','Mcgraw',2010);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into BOOK30 values(20,'SE','Person',2008);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BOOK30 values(30,'FLAT','SAM Pub',2019);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into BOOK30 values(40,'BDA','IOP',2018);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BOOK30 values(50,'MP','IEEE',2020);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into BOOK_AUTHORS30 values(10,'Andrew');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into BOOK_AUTHORS30 values(20,'Raj Kumar');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BOOK_AUTHORS30 values(30,'Samual');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into BOOK_AUTHORS30 values(40,'Padma');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into BOOK_AUTHORS30 values(50,'Guru');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into LIBRARY_BRANCH30 values(100,'Main Building','Mangalore');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into LIBRARY_BRANCH30 values(200,'Ground Floor','Bangalore');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into LIBRARY_BRANCH30 values(300,'1st Floor','Bangalore');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into LIBRARY_BRANCH30 values(400,'Research Building','Udupi');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into LIBRARY_BRANCH30 values(500,'ODP Building','Manipal');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into BOOK_COPIES30 values(10,100,20);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into BOOK_COPIES30 values(30,100,30);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into BOOK_COPIES30 values(10,200,5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into BOOK_COPIES30 values(20,300,15);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into BOOK_COPIES30 values(40,500,7);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into BOOK_LENDING30 values(10,100,201,'2017-01-15','2017-06-25');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into BOOK_LENDING30 values(20,200,202,'2020-07-10','2020-07-20');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BOOK_LENDING30 values(30,300,203,'2020-07-25','2020-07-30');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into BOOK_LENDING30 values(40,400,204,'2020-08-14','2020-08-26');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BOOK_LENDING30 values(50,500,205,'2020-09-01','2020-09-10');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from PUBLISHER30;
++---------+-----------+------------+
+| Name    | Address   | Phone      |
++---------+-----------+------------+
+| IEEE    | Delhi     | 9090900000 |
+| IOP     | Mumbai    | 9797970000 |
+| Mcgraw  | Bangalore | 9696500001 |
+| Person  | Bangalore | 9595950000 |
+| SAM Pub | Mangalore | 9494940000 |
++---------+-----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from  BOOK30;
++---------+-------+----------------+----------+
+| Book_id | Title | Publisher_Name | Pub_Year |
++---------+-------+----------------+----------+
+|      10 | DBMS  | Mcgraw         |     2010 |
+|      20 | SE    | Person         |     2008 |
+|      30 | FLAT  | SAM Pub        |     2019 |
+|      40 | BDA   | IOP            |     2018 |
+|      50 | MP    | IEEE           |     2020 |
++---------+-------+----------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from BOOK_AUTHORS30;
++---------+-------------+
+| Book_id | Author_Name |
++---------+-------------+
+|      10 | Andrew      |
+|      20 | Raj Kumar   |
+|      30 | Samual      |
+|      40 | Padma       |
+|      50 | Guru        |
++---------+-------------+
+5 rows in set (0.03 sec)
+
+mysql> select * from LIBRARY_BRANCH30;
++-----------+-------------------+-----------+
+| Branch_id | Branch_Name       | Address   |
++-----------+-------------------+-----------+
+|       100 | Main Building     | Mangalore |
+|       200 | Ground Floor      | Bangalore |
+|       300 | 1st Floor         | Bangalore |
+|       400 | Research Building | Udupi     |
+|       500 | ODP Building      | Manipal   |
++-----------+-------------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from BOOK_COPIES30;
++---------+-----------+--------------+
+| Book_id | Branch_id | No_of_Copies |
++---------+-----------+--------------+
+|      10 |       100 |           20 |
+|      30 |       100 |           30 |
+|      10 |       200 |            5 |
+|      20 |       300 |           15 |
+|      40 |       500 |            7 |
++---------+-----------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from BOOK_LENDING30;
++---------+-----------+---------+------------+------------+
+| Book_id | Branch_id | Card_No | Date_Out   | Due_Date   |
++---------+-----------+---------+------------+------------+
+|      10 |       100 |     201 | 2017-01-15 | 2017-06-25 |
+|      20 |       200 |     202 | 2020-07-10 | 2020-07-20 |
+|      30 |       300 |     203 | 2020-07-25 | 2020-07-30 |
+|      40 |       400 |     204 | 2020-08-14 | 2020-08-26 |
+|      50 |       500 |     205 | 2020-09-01 | 2020-09-10 |
++---------+-----------+---------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select BOOK30.Book_id, BOOK30.Title, BOOK30.Publisher_Name, BOOK_AUTHORS30.Author_Name, BOOK_COPIES30.No_of_Copies,LIBRARY_BRANCH30.Branch_id from BOOK30, BOOK_AUTHORS30, BOOK_COPIES30, LIBRARY_BRANCH30 where BOOK30.Book_id=BOOK_AUTHORS30.Book_id AND BOOK30.Book_id=BOOK_COPIES30.Book_id AND LIBRARY_BRANCH30.Branch_id=BOOK_COPIES30.Branch_id;
++---------+-------+----------------+-------------+--------------+-----------+
+| Book_id | Title | Publisher_Name | Author_Name | No_of_Copies | Branch_id |
++---------+-------+----------------+-------------+--------------+-----------+
+|      10 | DBMS  | Mcgraw         | Andrew      |           20 |       100 |
+|      10 | DBMS  | Mcgraw         | Andrew      |            5 |       200 |
+|      20 | SE    | Person         | Raj Kumar   |           15 |       300 |
+|      30 | FLAT  | SAM Pub        | Samual      |           30 |       100 |
+|      40 | BDA   | IOP            | Padma       |            7 |       500 |
++---------+-------+----------------+-------------+--------------+-----------+
+5 rows in set (0.00 sec)
+
+
+mysql> delete from BOOK30 where Book_id=10;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from  BOOK30;
++---------+-------+----------------+----------+
+| Book_id | Title | Publisher_Name | Pub_Year |
++---------+-------+----------------+----------+
+|      20 | SE    | Person         |     2008 |
+|      30 | FLAT  | SAM Pub        |     2019 |
+|      40 | BDA   | IOP            |     2018 |
+|      50 | MP    | IEEE           |     2020 |
++---------+-------+----------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select Pub_year from BOOK30;
++----------+
+| Pub_year |
++----------+
+|     2008 |
+|     2019 |
+|     2018 |
+|     2020 |
++----------+
+4 rows in set (0.03 sec)
+
+mysql>  SELECT BOOK30.Book_id, BOOK30.Title, BOOK_COPIES30.No_of_Copies FROM BOOK30, BOOK_COPIES30, LIBRARY_BRANCH30 WHERE BOOK30.Book_id=BOOK_COPIES30.Book_id AND BOOK_COPIES30.Branch_id=LIBRARY_BRANCH30.Branch_id;
++---------+-------+--------------+
+| Book_id | Title | No_of_Copies |
++---------+-------+--------------+
+|      30 | FLAT  |           30 |
+|      20 | SE    |           15 |
+|      40 | BDA   |            7 |
++---------+-------+--------------+
+3 rows in set (0.02 sec)
+
+mysql> select BOOK30.Book_id,BOOK_AUTHORS30.Author_Name from BOOK30, BOOK_AUTHORS30 where  BOOK30.Book_id=BOOK_AUTHORS30.Book_id ;
++---------+-------------+
+| Book_id | Author_Name |
++---------+-------------+
+|      20 | Raj Kumar   |
+|      30 | Samual      |
+|      40 | Padma       |
+|      50 | Guru        |
++---------+-------------+
+4 rows in set (0.02 sec)
+
+mysql> select Book_id,Title,Publisher_Name from BOOK30;
++---------+-------+----------------+
+| Book_id | Title | Publisher_Name |
++---------+-------+----------------+
+|      20 | SE    | Person         |
+|      30 | FLAT  | SAM Pub        |
+|      40 | BDA   | IOP            |
+|      50 | MP    | IEEE           |
++---------+-------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into BOOK30 values(10,'DBMS','Mcgraw',2010);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select Book_id,Title,Publisher_Name from BOOK30;
++---------+-------+----------------+
+| Book_id | Title | Publisher_Name |
++---------+-------+----------------+
+|      10 | DBMS  | Mcgraw         |
+|      20 | SE    | Person         |
+|      30 | FLAT  | SAM Pub        |
+|      40 | BDA   | IOP            |
+|      50 | MP    | IEEE           |
++---------+-------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> select BOOK30.Book_id, BOOK30.Title, BOOK30.Publisher_Name, BOOK_AUTHORS30.Author_Name, BOOK_COPIES30.No_of_Copies,LIBRARY_BRANCH30.Branch_id from BOOK30, BOOK_AUTHORS30, BOOK_COPIES30, LIBRARY_BRANCH30 where BOOK30.Book_id=BOOK_AUTHORS30.Book_id AND BOOK30.Book_id=BOOK_COPIES30.Book_id AND LIBRARY_BRANCH30.Branch_id=BOOK_COPIES30.Branch_id;
++---------+-------+----------------+-------------+--------------+-----------+
+| Book_id | Title | Publisher_Name | Author_Name | No_of_Copies | Branch_id |
++---------+-------+----------------+-------------+--------------+-----------+
+|      30 | FLAT  | SAM Pub        | Samual      |           30 |       100 |
+|      20 | SE    | Person         | Raj Kumar   |           15 |       300 |
+|      40 | BDA   | IOP            | Padma       |            7 |       500 |
++---------+-------+----------------+-------------+--------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from BOOK30
+    -> ;
++---------+-------+----------------+----------+
+| Book_id | Title | Publisher_Name | Pub_Year |
++---------+-------+----------------+----------+
+|      10 | DBMS  | Mcgraw         |     2010 |
+|      20 | SE    | Person         |     2008 |
+|      30 | FLAT  | SAM Pub        |     2019 |
+|      40 | BDA   | IOP            |     2018 |
+|      50 | MP    | IEEE           |     2020 |
++---------+-------+----------------+----------+
+5 rows in set (0.00 sec)
+
+mysql>  select BOOK30.Book_id, BOOK30.Title, BOOK30.Publisher_Name, BOOK_AUTHORS30.Author_Name, BOOK_COPIES30.No_of_Copies,LIBRARY_BRANCH30.Branch_id from BOOK30, BOOK_AUTHORS30, BOOK_COPIES30, LIBRARY_BRANCH30 where BOOK30.Book_id=BOOK_AUTHORS30.Book_id AND BOOK30.Book_id=BOOK_COPIES30.Book_id AND LIBRARY_BRANCH30.Branch_id=BOOK_COPIES30.Branch_id;
++---------+-------+----------------+-------------+--------------+-----------+
+| Book_id | Title | Publisher_Name | Author_Name | No_of_Copies | Branch_id |
++---------+-------+----------------+-------------+--------------+-----------+
+|      20 | SE    | Person         | Raj Kumar   |           15 |       300 |
+|      30 | FLAT  | SAM Pub        | Samual      |           30 |       100 |
+|      40 | BDA   | IOP            | Padma       |            7 |       500 |
++---------+-------+----------------+-------------+--------------+-----------+
+3 rows in set (0.02 sec)
+
+mysql> insert into BOOK_LENDING30 values(10,100,201,'2017-06-15','2020-06-25');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into BOOK_LENDING30 values(20,200,202,'2017-05-10','2017-05-20');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into BOOK_LENDING30 values(30,300,203,'2017-07-25','2017-07-25');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into BOOK_LENDING30 values(40,400,204,'2017-08-14','2017-08-26');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> insert into BOOK_LENDING30 values(50,500,205,'2017-09-01','2017-09-10');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into BOOK_LENDING30 values(10,100,202,'2017-05-11','2017-05-21');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> insert into BOOK_LENDING30 values(10,100,202,'2017-05-15','2017-06-25');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>
+mysql> insert into BOOK_LENDING30 values(10,100,202,'2017-04-15','2017-06-25');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> select * from BOOK_LENDING30;
++---------+-----------+---------+------------+------------+
+| Book_id | Branch_id | Card_No | Date_Out   | Due_Date   |
++---------+-----------+---------+------------+------------+
+|      20 |       200 |     202 | 2020-07-10 | 2020-07-20 |
+|      30 |       300 |     203 | 2020-07-25 | 2020-07-30 |
+|      40 |       400 |     204 | 2020-08-14 | 2020-08-26 |
+|      50 |       500 |     205 | 2020-09-01 | 2020-09-10 |
+|      10 |       100 |     201 | 2017-06-15 | 2020-06-25 |
+|      20 |       200 |     202 | 2017-05-10 | 2017-05-20 |
+|      30 |       300 |     203 | 2017-07-25 | 2017-07-25 |
+|      40 |       400 |     204 | 2017-08-14 | 2017-08-26 |
+|      50 |       500 |     205 | 2017-09-01 | 2017-09-10 |
+|      10 |       100 |     202 | 2017-05-11 | 2017-05-21 |
+|      10 |       100 |     202 | 2017-05-15 | 2017-06-25 |
+|      10 |       100 |     202 | 2017-04-15 | 2017-06-25 |
++---------+-----------+---------+------------+------------+
+12 rows in set (0.01 sec)
+
+mysql> SELECT Card_No FROM BOOK_LENDING30 where Date_Out BETWEEN '2017-01-15' AND '2017-06-25' group by Card_No having count(*)>3;
++---------+
+| Card_No |
++---------+
+|     202 |
++---------+
+1 row in set (0.04 sec)
+
+mysql>
+
+
