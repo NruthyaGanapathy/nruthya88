@@ -1,0 +1,133 @@
+Microsoft Windows [Version 10.0.19041.630]
+(c) 2020 Microsoft Corporation. All rights reserved.
+
+C:\Users\dell>cd "C:\Program Files\MySQL\MySQL Server 8.0\bin"
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.21 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use my_db;
+Database changed
+mysql> CREATE TABLE SALESMAN1(SALESMAN_ID INTEGER, NAME VARCHAR(20), CITY VARCHAR(20), COMMISSION VARCHAR(20), PRIMARY KEY (SALESMAN_ID));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> CREATE TABLE CUSTOMER1(CUSTOMER_ID INTEGER, CUSTOMER_NAME VARCHAR(20), CITY VARCHAR(20), GRADE INTEGER, SALESMAN_ID INTEGER, PRIMARY KEY (CUSTOMER_ID), FOREIGN KEY(SALESMAN_ID) REFERENCES SALESMAN1(SALESMAN_ID) ON DELETE SET NULL);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> CREATE TABLE ORDERS1(ORD_NO INTEGER, PURCHASE_AMT INTEGER, ORD_DATE DATE,SALESMAN_ID INTEGER,CUSTOMER_ID INTEGER, PRIMARY KEY (ORD_NO),FOREIGN KEY(CUSTOMER_ID) REFERENCES CUSTOMER1(CUSTOMER_ID) ON DELETE CASCADE,FOREIGN KEY(SALESMAN_ID) REFERENCES SALESMAN1(SALESMAN_ID) ON DELETE CASCADE);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql>
+mysql> INSERT INTO SALESMAN8 VALUES(10,'akash','mangalore','2%');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> INSERT INTO SALESMAN8 VALUES(20,'ram','bangalore','10%');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO SALESMAN8 VALUES(30,'raj','mangalore','5%');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO SALESMAN8 VALUES(40,'kiran','mysore','15%');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMER8 VALUES(1000,'avinash','mangalore',100,10);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMER8 VALUES(2000,'kumar','bangalore',200,20);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMER8 VALUES(3000,'preethi','mysore',300,30);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO CUSTOMER8 VALUES(4000,'smitha','mangalore',400,40);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO ORDERS8 VALUES (551,5000,'2020-01-04',10,1000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ORDERS8 VALUES (552,2500,'2020-02-05',20,2000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO ORDERS8 VALUES (553,500,'2020-03-03',30,3000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ORDERS8 VALUES (554,1500,'2020-04-02',40,4000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO ORDERS8 VALUES (555,2000,'2020-06-03',10,2000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  SELECT GRADE, COUNT(DISTINCT CUSTOMER_ID) FROM CUSTOMER8 GROUP BY GRADE HAVING GRADE>(SELECT AVG(GRADE) FROM CUSTOMER8 WHERE CITY='BANGALORE');
++-------+-----------------------------+
+| GRADE | COUNT(DISTINCT CUSTOMER_ID) |
++-------+-----------------------------+
+|   300 |                           1 |
+|   400 |                           1 |
++-------+-----------------------------+
+2 rows in set (0.03 sec)
+
+mysql> SELECT SALESMAN_ID, NAME FROM SALESMAN8 S WHERE 1 < (SELECT COUNT(*) FROM ORDERS8 A WHERE S.SALESMAN_ID=A.SALESMAN_ID);
++-------------+-------+
+| SALESMAN_ID | NAME  |
++-------------+-------+
+|          10 | akash |
++-------------+-------+
+1 row in set (0.03 sec)
+
+mysql> SELECT SALESMAN8.SALESMAN_ID, NAME, CUSTOMER_NAME, COMMISSION FROM SALESMAN8, CUSTOMER8 WHERE SALESMAN8.CITY = CUSTOMER8.CITY UNION SELECT SALESMAN_ID, NAME, 'NO MATCH', COMMISSION FROM SALESMAN8 WHERE NOT CITY = ANY (SELECT CITY FROM CUSTOMER8) ORDER BY 2 DESC;
++-------------+-------+---------------+------------+
+| SALESMAN_ID | NAME  | CUSTOMER_NAME | COMMISSION |
++-------------+-------+---------------+------------+
+|          20 | ram   | kumar         | 10%        |
+|          30 | raj   | avinash       | 5%         |
+|          30 | raj   | smitha        | 5%         |
+|          40 | kiran | preethi       | 15%        |
+|          10 | akash | avinash       | 2%         |
+|          10 | akash | smitha        | 2%         |
++-------------+-------+---------------+------------+
+6 rows in set (0.01 sec)
+
+mysql> CREATE VIEW S_SALESMAN AS SELECT B.ORD_DATE, A.SALESMAN_ID, A.NAME FROM SALESMAN8 A, ORDERS8 B WHERE A.SALESMAN_ID = B.SALESMAN_ID
+    -> AND B.PURCHASE_AMT=(SELECT PURCHASE_AMT
+    -> FROM ORDERS8 C
+    -> WHERE C.ORD_DATE = B.ORD_DATE);
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> select * from S_SALESMAN;
++------------+-------------+-------+
+| ORD_DATE   | SALESMAN_ID | NAME  |
++------------+-------------+-------+
+| 2020-01-04 |          10 | akash |
+| 2020-02-05 |          20 | ram   |
+| 2020-03-03 |          30 | raj   |
+| 2020-04-02 |          40 | kiran |
+| 2020-06-03 |          10 | akash |
++------------+-------------+-------+
+5 rows in set (0.01 sec)
+
+mysql>
+
+
+mysql>DELETE FROM SALESMAN8 WHERE SALESMAN_ID=1000;
+
+mysql> select * from SALESMAN8;
++-------------+-------+-----------+------------+
+| SALESMAN_ID | NAME  | CITY      | COMMISSION |
++-------------+-------+-----------+------------+
+|          10 | akash | mangalore | 2%         |
+|          20 | ram   | bangalore | 10%        |
+|          30 | raj   | mangalore | 5%         |
+|          40 | kiran | mysore    | 15%        |
++-------------+-------+-----------+------------+
+4 rows in set (0.00 sec)
